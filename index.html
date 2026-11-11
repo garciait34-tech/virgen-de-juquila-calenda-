@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Invitación - Calenda</title>
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background: #fffaf5;
+  font-family: Georgia, serif;
+  overflow-x: hidden;
+}
+
+img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.invitation-section {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+
+/* INICIO */
+#inicio {
+  position: relative;
+  cursor: pointer;
+}
+
+.tap-message {
+  position: absolute;
+  bottom: 7%;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  color: white;
+  font-family: Arial, sans-serif;
+  font-size: 13px;
+  letter-spacing: 2px;
+  text-shadow: 0 2px 8px #000;
+  animation: pulse 1.5s infinite;
+  pointer-events: none;
+}
+
+@keyframes pulse {
+  50% { opacity: .45; }
+}
+
+/* TRANSICIÓN */
+#transition {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: rgba(255,250,245,.96);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity .5s ease;
+  pointer-events: none;
+}
+
+#transition.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.transition-message {
+  color: #a77c65;
+  font-size: 20px;
+  text-align: center;
+  letter-spacing: 2px;
+  padding: 20px;
+}
+
+/* PÉTALOS TRANSPARENTES */
+.falling-petal {
+  position: fixed;
+  top: -40px;
+  z-index: 1100;
+  pointer-events: none;
+  width: 13px;
+  height: 20px;
+  background: rgba(255,255,255,.55);
+  border-radius: 80% 10% 80% 10%;
+  box-shadow: 0 0 8px rgba(255,255,255,.45);
+  animation: falling linear forwards;
+}
+
+@keyframes falling {
+  0% {
+    transform: translate3d(0,-30px,0) rotate(0deg);
+    opacity: 0;
+  }
+  15% { opacity: .7; }
+  85% { opacity: .5; }
+  100% {
+    transform: translate3d(80px,110vh,0) rotate(540deg);
+    opacity: 0;
+  }
+}
+
+/* PORTADA */
+#portada {
+  position: relative;
+  overflow: hidden;
+}
+
+#portada > img {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: auto;
+}
+
+/* GIRASOLES */
+.cover-garden {
+  position: absolute;
+  z-index: 3;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 43%;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.garden-ground {
+  position: absolute;
+  bottom: -12px;
+  left: 0;
+  width: 100%;
+  height: 35px;
+  background: linear-gradient(transparent,rgba(37,91,38,.25));
+}
+
+.flower {
+  position: absolute;
+  bottom: 0;
+  width: 85px;
+  height: 210px;
+  transform-origin: bottom center;
+  animation: flower-sway 4s ease-in-out infinite alternate;
+}
+
+.flower:nth-child(1) {
+  left: 5%;
+  transform: scale(.75);
+}
+
+.flower:nth-child(2) {
+  left: 24%;
+  transform: scale(1.05);
+  animation-delay: -1.5s;
+}
+
+.flower:nth-child(3) {
+  left: 45%;
+  transform: scale(.85);
+}
+
+.flower:nth-child(4) {
+  left: 66%;
+  transform: scale(1.08);
+  animation-delay: -1.2s;
+}
+
+.flower:nth-child(5) {
+  left: 85%;
+  transform: scale(.72);
+}
+
+@keyframes flower-sway {
+  from { rotate: -4deg; }
+  to { rotate: 4deg; }
+}
+
+.stem {
+  position: absolute;
+  bottom: 0;
+  left: 39px;
+  width: 8px;
+  height: 145px;
+  border-radius: 10px;
+  background: linear-gradient(90deg,#28602c,#6d9d43,#28602c);
+  transform-origin: bottom;
+  animation: grow-stem 2s ease-out both;
+}
+
+@keyframes grow-stem {
+  from { transform: scaleY(0); }
+  to { transform: scaleY(1); }
+}
+
+.leaf {
+  position: absolute;
+  width: 42px;
+  height: 20px;
+  background: linear-gradient(135deg,#8bbd50,#34733a);
+  border-radius: 100% 0 100% 0;
+}
+
+.leaf.left {
+  left: 3px;
+  bottom: 55px;
+  transform: rotate(15deg);
+}
+
+.leaf.right {
+  left: 42px;
+  bottom: 88px;
+  transform: scaleX(-1) rotate(15deg);
+}
+
+.sunflower {
+  position: absolute;
+  top: 0;
+  left: 4px;
+  width: 78px;
+  height: 78px;
+  animation: sunflower-bloom 1.8s ease-out both;
+}
+
+@keyframes sunflower-bloom {
+  from { transform: scale(.1) rotate(-25deg); }
+  to { transform: scale(1) rotate(0); }
+}
+
+.sunflower .sun-petal {
+  position: absolute;
+  top: 2px;
+  left: 29px;
+  width: 20px;
+  height: 37px;
+  background: linear-gradient(#ffe76a,#f5a900);
+  border-radius: 50% 50% 45% 45%;
+  transform-origin: 10px 37px;
+}
+
+.sunflower .sun-petal:nth-child(1) { transform: rotate(0deg); }
+.sunflower .sun-petal:nth-child(2) { transform: rotate(30deg); }
+.sunflower .sun-petal:nth-child(3) { transform: rotate(60deg); }
+.sunflower .sun-petal:nth-child(4) { transform: rotate(90deg); }
+.sunflower .sun-petal:nth-child(5) { transform: rotate(120deg); }
+.sunflower .sun-petal:nth-child(6) { transform: rotate(150deg); }
+.sunflower .sun-petal:nth-child(7) { transform: rotate(180deg); }
+.sunflower .sun-petal:nth-child(8) { transform: rotate(210deg); }
+.sunflower .sun-petal:nth-child(9) { transform: rotate(240deg); }
+.sunflower .sun-petal:nth-child(10) { transform: rotate(270deg); }
+.sunflower .sun-petal:nth-child(11) { transform: rotate(300deg); }
+.sunflower .sun-petal:nth-child(12) { transform: rotate(330deg); }
+
+.sunflower .center {
+  position: absolute;
+  top: 22px;
+  left: 22px;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: radial-gradient(circle,#8b4b1d,#48220d);
+  border: 3px solid #b87527;
+  z-index: 2;
+}
+
+/* DETALLES Y MAPS */
+.details-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.map-hotspot {
+  position: absolute;
+  z-index: 5;
+  left: 50%;
+  top: 80%;
+  width: 18%;
+  height: 13%;
+  transform: translate(-50%,-50%);
+  display: block;
+  border-radius: 50%;
+  background: transparent;
+}
+
+/* CUENTA REGRESIVA */
+#countdown {
+  padding: 35px 15px;
+  text-align: center;
+  color: #805d4d;
+  background: #fffaf5;
+}
+
+#countdown h2 {
+  font-size: 23px;
+  font-weight: normal;
+  margin: 0 0 20px;
+}
+
+.timer {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.time-box {
+  min-width: 65px;
+  padding: 12px 8px;
+  background: #f3e6dc;
+  border-radius: 10px;
+}
+
+.time-box strong {
+  display: block;
+  font-size: 24px;
+  color: #8c5e48;
+}
+
+.time-box span {
+  display: block;
+  font-size: 11px;
+  margin-top: 4px;
+}
+
+/* FIRMA */
+footer {
+  text-align: center;
+  padding: 25px 12px 35px;
+  color: #967665;
+  font-family: Arial,sans-serif;
+  font-size: 12px;
+  letter-spacing: 1.5px;
+  background: #fffaf5;
+}
+
+footer a {
+  color: inherit;
+  text-decoration: none;
+}
+
+@media(max-width:480px) {
+  .cover-garden {
+    height: 38%;
+  }
+
+  .flower {
+    scale: .78;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<!-- INICIO -->
+<section id="inicio" class="invitation-section" onclick="startInvitation()">
+  <img src="inicio.jpg" alt="Toca para abrir la invitación">
+  <div class="tap-message">TOCA PARA ABRIR LA INVITACIÓN</div>
+</section>
+
+<audio id="music" src="musica.mp3" loop preload="auto"></audio>
+
+<div id="transition">
+  <div class="transition-message">Con alegría te invitamos...</div>
+</div>
+
+<!-- PORTADA -->
+<section id="portada" class="invitation-section">
+  <img src="portada.jpg" alt="Portada de la invitación">
+
+  <div class="cover-garden">
+
+    <div class="flower">
+      <div class="stem"></div>
+      <div class="leaf left"></div>
+      <div class="leaf right"></div>
+      <div class="sunflower">
+        <i class="sun-petal"></i><i class="sun-petal"></i>
+        <i class="sun-petal"></i><i class="sun-petal"></i>
+        <i class="sun-petal"></i><i class="sun-petal"></i>
+        <i class="sun-petal"></i><i class="sun-petal"></i>
+        <i class="sun-petal"></i><i class="sun-petal"></i>
+        <i class="sun-petal"></i><i class="sun-petal"></i>
+        <div class="center"></div>
+      </div>
+    </div>
+
+    <div class="flower">
+      <div class="stem"></div>
+      <div class="leaf left"></div>
+      <div class="leaf right"></div>
+      <div class="sunflower">
+        <i class="sun-petal"></i><i class="sun-petal"></i>
+        <i class="sun-petal"></i><i class="sun-petal"></i>
+        <i class="sun-petal"></i><i class="sun-petal"></i>
+        <i class="sun-petal"></i><i class="sun-petal"></i>
+        <i class="sun-petal"></i><i class="sun-petal"></i>
+        <i class="sun-petal"></i><i class="sun-petal"></i>
+        <div class="center"></div>
+      </div>
+    </div>
+
+    <div class="flower">
+      <div class="stem"></div>
+      <div class="leaf left"></div>
+      <div class="leaf right"></div>
+      <div class="sunflower">
+        <i class="sun-petal"></i><i class="sun-petal"></i>
+        <i class="sun-petal"></i><i class="sun-petal"></i>
+        <i class="sun-petal"></i><i class="sun-petal"></i>
+        <i class="sun-petal"></i><i class="sun-petal"></i>
+        <i class="sun-petal"></i><i class="sun-petal"></i>
+        <i class="sun-petal"></i><i class="sun-petal"></i>
+        <div class="center"></div>
+      </div>
+    </div>
+
+    <div class="flower">
+      <div class="stem"></div>
+      <div class="leaf left"></div>
+      <div class="leaf right"></div>
+      <div class="sunflower">
+        <i class="sun-petal"></i><i class="sun-petal"></i>
+        <i class="sun-petal"></i><i class="sun-petal"></i>
+        <i class="sun-petal"></i><i class="sun-petal"></i>
+        <i class="sun-petal"></i><i class="sun-petal"></i>
+        <i class="sun-petal"></i><i class="sun-petal"></i>
+        <i class="sun-petal"></i><i class="sun-petal"></i>
+        <div class="center"></div>
+      </div>
+    </div>
+
+    <div class="flower">
+      <div class="stem"></div>
+      <div class="leaf left"></div>
+      <div class="leaf right"></div>
+      <div class="sunflower">
+        <i class="sun-petal"></i><i class="sun-petal"></i>
+        <i class="sun-petal"></i><i class="sun-petal"></i>
+        <i class="sun-petal"></i><i class="sun-petal"></i>
+        <i class="sun-petal"></i><i class="sun-petal"></i>
+        <i class="sun-petal"></i><i class="sun-petal"></i>
+        <i class="sun-petal"></i><i class="sun-petal"></i>
+        <div class="center"></div>
+      </div>
+    </div>
+
+    <div class="garden-ground"></div>
+  </div>
+</section>
+
+<!-- CONTEXTO -->
+<section id="contexto" class="invitation-section">
+  <img src="contexto.jpg" alt="Información de la invitación">
+</section>
+
+<!-- DETALLES Y UBICACIÓN -->
+<section id="detalles" class="invitation-section">
+  <div class="details-wrapper">
+    <img src="detalles.jpg" alt="Detalles de la invitación">
+    <a
+      class="map-hotspot"
+      href="https://goo.gl/maps/825JtysoS72kmZEv5?g_st=ac"
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label="Abrir ubicación en Google Maps"
+    ></a>
+  </div>
+</section>
+
+<!-- CUENTA REGRESIVA -->
+<section id="countdown">
+  <h2>¡Te esperamos!</h2>
+
+  <div class="timer">
+    <div class="time-box">
+      <strong id="days">00</strong>
+      <span>DÍAS</span>
+    </div>
+    <div class="time-box">
+      <strong id="hours">00</strong>
+      <span>HORAS</span>
+    </div>
+    <div class="time-box">
+      <strong id="minutes">00</strong>
+      <span>MINUTOS</span>
+    </div>
+    <div class="time-box">
+      <strong id="seconds">00</strong>
+      <span>SEGUNDOS</span>
+    </div>
+  </div>
+</section>
+
+<!-- FIRMA Y WHATSAPP -->
+<footer>
+  INVITACIÓN CREADA POR<br>
+  <strong>MOON GRAFIK</strong><br><br>
+  <a href="https://wa.me/524426070366" target="_blank" rel="noopener noreferrer">
+    44 26 07 03 66
+  </a>
+</footer>
+
+<script>
+let invitationStarted = false;
+let petalsStarted = false;
+let petalInterval = null;
+
+/* CREA PÉTALOS TRANSPARENTES */
+function createPetal() {
+  const petal = document.createElement("div");
+  petal.className = "falling-petal";
+
+  petal.style.left = Math.random() * 100 + "vw";
+  petal.style.animationDuration = (5 + Math.random() * 5) + "s";
+  petal.style.opacity = (0.25 + Math.random() * 0.4).toString();
+
+  document.body.appendChild(petal);
+
+  setTimeout(() => petal.remove(), 11000);
+}
+
+/* LLUVIA DE PÉTALOS */
+function startPetals(duration) {
+  const end = Date.now() + duration;
+
+  const interval = setInterval(() => {
+    createPetal();
+
+    if (Date.now() > end) {
+      clearInterval(interval);
+    }
+  }, 180);
+}
+
+/* ABRIR INVITACIÓN */
+function startInvitation() {
+  if (invitationStarted) return;
+  invitationStarted = true;
+
+  document.getElementById("music").play().catch(() => {
+    console.log("El navegador no permitió iniciar la música.");
+  });
+
+  document.getElementById("inicio").style.cursor = "default";
+
+  const transition = document.getElementById("transition");
+  transition.classList.add("active");
+
+  startPetals(2800);
+
+  setTimeout(() => {
+    transition.classList.remove("active");
+
+    document.getElementById("portada").scrollIntoView({
+      behavior: "smooth"
+    });
+  }, 2600);
+}
+
+/* PÉTALOS DESPUÉS DE LA PORTADA */
+const coverObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (
+      !entry.isIntersecting &&
+      entry.boundingClientRect.top < 0 &&
+      invitationStarted &&
+      !petalsStarted
+    ) {
+      petalsStarted = true;
+
+      petalInterval = setInterval(() => {
+        createPetal();
+      }, 650);
+    }
+  });
+}, { threshold: 0.05 });
+
+coverObserver.observe(document.getElementById("portada"));
+
+/* CUENTA REGRESIVA
+   FECHA CONFIGURADA: 27 DE NOVIEMBRE DE 2026 A LAS 6 PM.
+   MODIFICA LA FECHA SI TU EVENTO ES OTRO. */
+const eventDate = new Date("2026-11-27T18:00:00-06:00").getTime();
+
+function updateCountdown() {
+  const now = Date.now();
+  const difference = eventDate - now;
+
+  if (difference <= 0) {
+    ["days", "hours", "minutes", "seconds"].forEach(id => {
+      document.getElementById(id).textContent = "00";
+    });
+    return;
+  }
+
+  document.getElementById("days").textContent =
+    Math.floor(difference / 86400000);
+
+  document.getElementById("hours").textContent =
+    Math.floor((difference / 3600000) % 24);
+
+  document.getElementById("minutes").textContent =
+    Math.floor((difference / 60000) % 60);
+
+  document.getElementById("seconds").textContent =
+    Math.floor((difference / 1000) % 60);
+}
+
+updateCountdown();
+setInterval(updateCountdown, 1000);
+</script>
+
+</body>
+</html>
